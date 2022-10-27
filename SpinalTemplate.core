@@ -1,0 +1,46 @@
+CAPI=2:
+name: chenbosoft::SpinalTemplate:0.1
+description: SpinalHDL Modules for fun
+
+filesets:
+  rtl:
+    depend: ["fusesoc:utils:generators:0.1.7"]
+
+generate:
+  verilog:
+    generator: spinalhdl
+    parameters:
+      buildtool: sbt
+      copy_core: true
+      extraargs: ""
+      output:
+        files: [generated/MyTopLevel.v : {file_type: verilogSource}]
+
+targets:
+  default:
+    default_tool: vivado
+    filesets: [rtl]
+    generate: [verilog]
+    toplevel: ArtyTop
+    tools:
+      vivado:
+        part: xc7a100tcsg324-1
+      symbiflow:
+        part: xc7a100t
+        pnr: vtr
+        package: csg324-1
+        vendor: xilinx
+
+  gba:
+    default_tool: vivado
+    filesets: [rtl, gba-constr, rom]
+    generate: [gba-verilog]
+    toplevel: GBATop
+    tools:
+      vivado:
+        part: xc7a100tcsg324-1
+      symbiflow:
+        part: xc7a100t
+        pnr: vtr
+        package: csg324-1
+        vendor: xilinx
